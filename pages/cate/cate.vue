@@ -1,5 +1,10 @@
 <template>
+	
 	<view>
+		<!-- 这里存放搜索页组件 -->
+		<!-- my-search自定义了props属性，所以这里可以自定义传值 -->
+		<my-search @click="goSearch"></my-search>
+		
 		<view class="scroll-view-container">
 			<!-- 左侧的滑动区域 -->
 			<scroll-view class="left-scroll-view" scroll-y="true" :style="{height: wh + 'px'}">	
@@ -56,7 +61,7 @@
 			/* getSystemInfoSync()获取可用设备的高度 */
 			const sysInfo=uni.getSystemInfoSync()
 			 console.log(sysInfo)
-			this.wh=sysInfo.windowHeight
+			this.wh=sysInfo.windowHeight-50
 			
 			// 调用获取分类列表数据的方法  
 			this.getCateList()
@@ -88,6 +93,13 @@
 			gotoGoodsList(item3){
 				 uni.navigateTo({
 				   url: '/subpkg/goods_list/goods_list?cid=' + item3.cat_id  })
+			},
+			
+			goSearch(){
+				/* navigateTo跳转 */
+				uni.navigateTo({
+					url:'/subpkg/search/search'
+				})
 			}
 		}
 	}

@@ -1,5 +1,10 @@
 <template>
 	<view>
+		<!-- 搜索界面 -->
+		<view class="search-box">
+			<my-search @click="goSearch"></my-search>
+		</view>
+			
 		<!-- 轮播图 -->
 	  <swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" :circular="true">
 	  	<swiper-item v-for="(item,index) in swiperList" :key="index">
@@ -120,6 +125,14 @@
 				    	url:'/pages/cate/cate'
 				    })
 				}
+			},
+			
+			
+			goSearch(){
+				/* navigateTo跳转 */
+				uni.navigateTo({
+					url:'/subpkg/search/search'
+				})
 			}
 			
 		}
@@ -127,6 +140,16 @@
 </script>
 
 <style lang="scss">
+	
+	.search-box{
+		position: sticky;
+		top:-1px;
+		z-index:999;
+		overflow: hidden;
+	
+	}
+	
+	
 	swiper{
 		height:330rpx;
 		.swiper-item, image{
