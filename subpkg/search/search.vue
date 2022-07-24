@@ -115,7 +115,7 @@
 					this.historylist=[],
 					uni.setStorageSync('kw', '[]') // 清空本地存储中记录的搜索历史  
 				},
-				//点击历史记录冰鞋带参数进入商品详情列表页面
+				//点击历史记录并携带参数进入商品详情列表页面
 				gotoGoodsList(kw) {
 					  uni.navigateTo({  
 					 url: '/subpkg/goods_list/goods_list?query=' + kw  
