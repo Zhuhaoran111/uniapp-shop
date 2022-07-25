@@ -7,7 +7,7 @@
 			</swiper-item>
 		</swiper>
 		
-		<!-- 2、商品的参数信息区域 -->
+		<!-- 2、商品的参数信息区域 1-->
 		<view class="goods-info-box">
 			<!-- 商品的价格 -->
 			<view class="price">￥{{goods_info.goods_price}}</view>
@@ -34,14 +34,21 @@
 		<!-- 3、富文本区域 :nodes是把html结构转换-->
 		<rich-text :nodes="goods_info.goods_introduce"></rich-text>
 		
-		<!-- 4、商品底部导航区域 -->
+		<!-- 4、商品底部导航区域 1-->
 		<view class="goods_nav">
-			<uni-goods-nav :fill="true"  :options="options" :buttonGroup="buttonGroup"  @click="onClick" @buttonClick="buttonClick" />
+			<uni-goods-nav 
+			:fill="true"  
+			:options="options" 
+			:buttonGroup="buttonGroup"  
+			@click="onClick" 
+			@buttonClick="buttonClick" />
 		</view>
 	</view>
 </template>
 
+
 <script>
+import {mapState,mapMutations,mapGetters} from 'vuex'
 	export default {
 		data() {
 			return {
@@ -54,7 +61,7 @@
 						}, {
 							icon: 'cart',
 							text: '购物车',
-							info: 9
+							info: 0
 						}],
 					    buttonGroup: [{
 					      text: '加入购物车',
@@ -68,15 +75,43 @@
 					    }
 					    ],
 				
-				goods_info: {}// 商品详情对象
+				goods_info: {},// 商品详情对象1
 			};
 		},
+		
+		watch:{
+			total:{
+				handler(newValue){
+				const findReaults=this.options.find(x=>x.text==='购物车')
+					if(findReaults){
+						findReaults.info=newValue
+					}
+				},
+				//开启深度监视，页面初次渲染就执行这个函数
+				immediate:true
+			}
+		
+		},
+		
+		computed:{
+			// 前面是模块名称，后面是模块里面的值1
+			...mapState('m_cart',['cart']),
+			...mapGetters('m_cart', ['total']),
+
+		},
+		
+	
+		
 		onLoad(options) {	
-		const goods_id = options.goods_id// 获取商品 Id	
+		const goods_id = options.goods_id// 获取商品 Id	1
 		 this.getGoodsDetail(goods_id)// 调用请求商品详情数据的方法
 		},
 		
 		methods:{
+			
+			...mapMutations('m_cart',['addToCart']),
+			
+	
 			async getGoodsDetail(goods_id){
 		    const { data: res } = await uni.$http.get('/api/public/v1/goods/detail', { goods_id })
 			if (res.meta.status !== 200) return uni.$showMsg()
@@ -88,7 +123,7 @@
 			this.goods_info = res.message
 			},
 			
-			//轮播图片预览效果展示uni.previewImage大图预览
+			//轮播图片预览效果展示uni.previewImage大图预览 1
 			preview(index){
 				uni.previewImage({
 					current:index,
@@ -102,8 +137,29 @@
 					uni.switchTab({
 						url:'/pages/cart/cart'
 					})				}
-			}
-		}
+			},
+			
+			// 这是点击加入购物车的处理函数1
+			buttonClick(e){
+				
+				if(e.content.text==='加入购物车'){
+					//组织商品的信息对象1
+					const goods = {
+					goods_id: this.goods_info.goods_id, // 商品的Id
+					goods_name: this.goods_info.goods_name, // 商品的名称
+					goods_price: this.goods_info.goods_price, // 商品的价格
+					goods_count: 1, // 商品的数量
+					goods_small_logo: this.goods_info.goods_small_logo, // 商品的图片
+					goods_state: true // 商品的勾选状态
+					}
+					
+					//调用addToCart方法
+					this.addToCart(goods)
+				}
+			},
+			
+		},
+		
 	}
 </script>
 
