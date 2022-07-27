@@ -1,6 +1,9 @@
 @charset "UTF-8";
 /* 水平间距 */
 /* 水平间距 */
+.cart-container {
+  padding-bottom: 50px;
+}
 .cart-title {
   height: 40px;
   display: flex;
@@ -11,5 +14,16 @@
 .cart-title .cart-title-text {
   font-size: 14px;
   margin-left: 10px;
+}
+.empty-cart {
+  display: flex;
+  height: 555px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.empty-cart .empty-image {
+  width: 100px;
+  height: 100px;
 }
 
