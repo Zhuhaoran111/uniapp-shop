@@ -28,6 +28,15 @@ _requestMiniprogram.$http.beforeRequest = function (options) {
   uni.showLoading({
     title: '数据加载中' });
 
+  console.log(_store.default);
+  //判断当前是否有权限的接口
+  if (options.url.indexOf('/my/') !== -1) {
+    options.header = {
+      Authorization: 'Bearer' + _store.default.state.m_user.token };
+
+
+    console.log('Bearer' + '' + _store.default.state.m_user.token);
+  }
 };
 
 // 请求完成之后做一些事情响应拦截器
